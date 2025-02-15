@@ -21,7 +21,7 @@ export default async function handler(req, res) {
         // Handle both JSON and URL-encoded form data
         const donation = {
             donator_name: req.body.donator_name || req.query.donator_name,
-            amount: req.body.amount || req.query.amount,
+            amount: req.body.amount_raw || req.query.amount_raw,
             message: req.body.message || req.query.message || '-'
         };
 
