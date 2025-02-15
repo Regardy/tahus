@@ -3,7 +3,7 @@ import { join } from 'path';
 
 export default async function handler(req, res) {
     res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'POST');
+    res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
     if (req.method === 'OPTIONS') {
@@ -15,9 +15,18 @@ export default async function handler(req, res) {
     }
 
     try {
-        const donation = req.body;
-        
-        if (!donation?.donator_name || !donation?.amount) {
+        // Log the request body for debugging
+        console.log('Received body:', req.body);
+
+        // Handle both JSON and URL-encoded form data
+        const donation = {
+            donator_name: req.body.donator_name || req.query.donator_name,
+            amount: req.body.amount || req.query.amount,
+            message: req.body.message || req.query.message || '-'
+        };
+
+        if (!donation.donator_name || !donation.amount) {
+            console.log('Invalid donation data:', donation);
             return res.status(400).json({ error: 'Invalid donation data' });
         }
 
@@ -46,6 +55,7 @@ export default async function handler(req, res) {
             timestamp: new Date().toISOString()
         });
     } catch (err) {
+        console.error('Webhook error:', err);
         res.status(500).json({ error: err.message });
     }
 }
