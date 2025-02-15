@@ -7,7 +7,7 @@
       "dest": "/api/donations.js"
     },
     {
-      "src": "/webhook-saweria",
+      "src": "/api/webhook-saweria",
       "methods": ["POST", "OPTIONS"],
       "dest": "/api/webhook-saweria.js"
     }
