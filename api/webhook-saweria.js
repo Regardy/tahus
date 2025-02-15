@@ -1,5 +1,4 @@
-import { readFile, writeFile } from 'fs/promises';
-import { join } from 'path';
+let donations = [];
 
 export default async function handler(req, res) {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -30,25 +29,11 @@ export default async function handler(req, res) {
             return res.status(400).json({ error: 'Invalid donation data' });
         }
 
-        const STORAGE_PATH = join(process.cwd(), 'data', 'donations.json');
-        
-        // Read existing donations
-        let donations = [];
-        try {
-            const data = await readFile(STORAGE_PATH, 'utf8');
-            donations = JSON.parse(data);
-        } catch (err) {
-            // File doesn't exist or is invalid, start fresh
-        }
-
         // Add new donation
         donations.push({
             ...donation,
             timestamp: new Date().toISOString()
         });
-
-        // Save updated donations
-        await writeFile(STORAGE_PATH, JSON.stringify(donations, null, 2));
 
         res.status(200).json({
             success: true,
