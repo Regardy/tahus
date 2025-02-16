@@ -1,6 +1,0 @@
-{
-  "routes": [
-    { "src": "/webhook/saweria", "dest": "/api/webhook.js" },
-    { "src": "/donations", "dest": "/api/donations.js" }
-  ]
-}
