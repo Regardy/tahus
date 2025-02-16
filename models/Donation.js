@@ -1,10 +1,16 @@
-const mongoose = require("mongoose");
+const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
 
-const DonationSchema = new mongoose.Schema({
-  name: String,
-  amount: Number,
-  message: String,
-  timestamp: { type: Date, default: Date.now },
-});
+const getDonations = async () => {
+  const { data, error } = await supabase
+    .from("donations")
+    .select("*")
+    .order("timestamp", { ascending: false })
+    .limit(10);
+  return error ? [] : data;
+};
 
-module.exports = mongoose.model("Donation", DonationSchema);
+const saveDonation = async (donation) => {
+  await supabase.from("donations").insert([donation]);
+};
+
+module.exports = { getDonations, saveDonation };
