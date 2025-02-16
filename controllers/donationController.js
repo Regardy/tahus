@@ -1,5 +1,6 @@
 const { getDonations, saveDonation } = require("../models/Donation");
 
+// Controller to fetch donations and send as JSON response
 exports.getDonations = async (req, res) => {
   try {
     const donations = await getDonations();
@@ -9,6 +10,7 @@ exports.getDonations = async (req, res) => {
   }
 };
 
+// Controller to save a new donation entry
 exports.createDonation = async (req, res) => {
   const { name, amount, message } = req.body;
   try {
